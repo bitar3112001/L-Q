@@ -5,6 +5,7 @@
   <title>إنشاء الأسئلة وحفظ الإجابات كـ PDF</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/3.0.1/jspdf.umd.min.js"></script>
+  
   <style>
     :root {
       --bg-color: #f9f9f9;
@@ -147,8 +148,16 @@
       .save-pdf-btn {
         padding: 12px 16px;
       }
+    *{
+        font-family: "Almarai", sans-serif;
     }
+    }
+    
   </style>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -156,8 +165,9 @@
 
 <!-- Input Block -->
 <div id="inputBlock">
-  <textarea id="listInput" placeholder="أدخل أسئلتك هنا (واحدة في كل سطر أو مع ترقيم 1‑، 2‑، 3‑ …)"></textarea>
+  <textarea id="listInput" placeholder="أدخل أسئلتك هنا (واحدة في كل سطر أو مع ترقيم 1-، 2-، 3- …)"></textarea>
   <button id="generateBtn">إنشاء</button>
+  <button id="saveAllBtn" class="save-pdf-btn" style="background-color:#ff8800;margin-top:10px">حفظ الكل كـ PDF واحد</button>
 </div>
 
 <!-- Questions will be inserted here -->
@@ -191,6 +201,42 @@
     const question = card.querySelector('p').innerText.trim();
     const answer = card.querySelector('.answer-input').value.trim() || '(لا يوجد إجابة)';
     saveAsPDF(question, answer);
+  });
+
+  /* Save ALL cards to one PDF */
+  document.getElementById('saveAllBtn').addEventListener('click', () => {
+    const cards = document.querySelectorAll('#qaList .card');
+    if (!cards.length) {
+      alert('لم يتم إنشاء أي أسئلة بعد');
+      return;
+    }
+    const doc = new jsPDF({ unit: 'pt', format: 'a4', hotfixes: ['px_scaling'] });
+    let y = 40, margin = 40, maxW = 520;
+    const pageH = doc.internal.pageSize.getHeight();
+    cards.forEach((card, idx) => {
+      const question = card.querySelector('p').innerText.trim();
+      const answer = card.querySelector('.answer-input').value.trim() || '(لا يوجد إجابة)';
+      doc.setFontSize(16); // bigger for clarity
+      doc.setFont(undefined, 'bold');
+      doc.text(`السؤال ${idx + 1}:`, margin, y);
+      y += 24;
+      doc.setFont(undefined, 'normal');
+      const qLines = doc.splitTextToSize(question, maxW);
+      doc.text(qLines, margin, y, { maxWidth: maxW });
+      y += qLines.length * 20 + 12;
+      doc.setFont(undefined, 'bold');
+      doc.text('الإجابة:', margin, y);
+      y += 24;
+      doc.setFont(undefined, 'normal');
+      const aLines = doc.splitTextToSize(answer, maxW);
+      doc.text(aLines, margin, y, { maxWidth: maxW });
+      y += aLines.length * 20 + 40;
+      if (idx < cards.length - 1 && y + 60 > pageH) { // new page if not enough room
+        doc.addPage();
+        y = 40;
+      }
+    });
+    doc.save('all_questions.pdf');
   });
 
   /* PDF maker */
