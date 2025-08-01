@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>ابدأ الكتابة والوصف — دليل عملي</title>
+  <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
+  <meta name="color-scheme" content="light dark" />
+  <style>
+    :root{
+      --bg: #ffffff;
+      --fg: #111111;
+      --muted:#5f6368;
+      --card:#f5f5f7;
+      --accent:#0a84ff;
+      --accent-fg:#ffffff;
+      --border:#e5e5ea;
+      --radius:14px;
+      --shadow:0 6px 20px rgba(0,0,0,.08);
+      --space:clamp(12px, 2.6vw, 18px);
+      --maxw: 980px;
+      --safe-top: env(safe-area-inset-top);
+      --safe-bottom: env(safe-area-inset-bottom);
+    }
+    @media (prefers-color-scheme: dark){
+      :root{
+        --bg:#0b0b0c; --fg:#f2f2f7; --muted:#a0a4ab; --card:#151518;
+        --border:#232327; --shadow:none; --accent:#0a84ff; --accent-fg:#ffffff;
+      }
+    }
+    [data-theme="dark"]{
+      --bg:#0b0b0c; --fg:#f2f2f7; --muted:#a0a4ab; --card:#151518;
+      --border:#232327; --shadow:none; --accent:#0a84ff; --accent-fg:#ffffff;
+    }
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro", "SF Arabic",
+                   "Segoe UI", "Noto Naskh Arabic", "Noto Sans Arabic",
+                   Tahoma, Arial, sans-serif;
+      background:var(--bg); color:var(--fg);
+      line-height:1.7; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+      padding-top: calc(var(--safe-top) + 8px);
+      padding-bottom: calc(var(--safe-bottom) + 12px);
+    }
+    .wrap{max-width:var(--maxw); margin:0 auto; padding: clamp(14px,3vw,22px)}
+    header{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      margin-bottom: clamp(14px,3vw,22px);
+    }
+    h1{font-size: clamp(22px, 4.5vw, 30px); margin:0; letter-spacing:.2px}
+    .muted{color:var(--muted); font-size: .95rem}
+    .toolbar{display:flex; gap:10px; flex-wrap:wrap}
+    button, .btn{
+      border:1px solid var(--border); background: var(--card); color:var(--fg);
+      border-radius: 12px; padding: 10px 14px; font-size: 15px;
+      cursor:pointer; box-shadow: var(--shadow);
+      transition: transform .05s ease;
+      touch-action: manipulation;
+    }
+    button:active{ transform: scale(.98) }
+    .primary{ background: var(--accent); color: var(--accent-fg); border-color: transparent }
+    .grid{
+      display:grid; gap: clamp(12px, 2.5vw, 18px);
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 840px){
+      .grid{ grid-template-columns: 1.1fr .9fr }
+    }
+    .card{
+      background: var(--card); border:1px solid var(--border);
+      border-radius: var(--radius); padding: clamp(14px, 2.5vw, 18px);
+      box-shadow: var(--shadow);
+    }
+    .card h2{ margin-top:0; font-size: clamp(18px, 3.8vw, 22px) }
+    .checklist{ list-style:none; padding:0; margin:0 }
+    .checklist li{
+      display:flex; gap:10px; align-items:flex-start;
+      padding:10px 8px; border-bottom:1px dashed var(--border);
+    }
+    .checklist li:last-child{ border-bottom:none }
+    .checklist input{ margin-top:3px; width:22px; height:22px }
+    textarea, input[type="text"]{
+      width:100%; border:1px solid var(--border); background:#fff0;
+      color:var(--fg); border-radius:12px; padding:12px;
+      font-size: 16px;
+    }
+    textarea{ min-height: 220px; resize: vertical }
+    .row{ display:flex; gap:10px; flex-wrap: wrap; align-items:center }
+    .stat{ font-variant-numeric: tabular-nums; }
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      background: var(--card); border:1px solid var(--border); padding:6px 10px; border-radius:999px;
+    }
+    .example{ font-size: 16px; background: #00000010; padding:12px; border-radius:12px }
+    .hint{ font-size:.95rem; color:var(--muted) }
+    footer{ margin-top: 18px; text-align:center; color:var(--muted); font-size:.93rem }
+    .tag{ display:inline-block; border:1px solid var(--border); border-radius:999px; padding:6px 10px; margin: 0 6px 6px 0 }
+    .section-title{ margin: 8px 0 12px 0 }
+      html, body{
+
+    font-family: 'Almarai', -apple-system, BlinkMacSystemFont, "SF Pro",
+                 "SF Arabic", "Segoe UI", "Noto Naskh Arabic",
+                 Tahoma, Arial, sans-serif;
+  }
+  body{ font-weight: 400; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>ابدأ الكتابة والوصف</h1>
+        <div class="muted">دليل عملي سريع + أدوات تساعدك على المسودة الأولى.</div>
+      </div>
+      <div class="toolbar">
+        <button id="themeBtn" aria-pressed="false" title="تبديل الوضع">الوضع الداكن</button>
+        <button id="toQuestionsBtn" title="صفحة الأسئلة">صفحة الأسئلة</button>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- العمود الأيسر: الأدوات -->
+      <section class="card" aria-labelledby="tools-title">
+        <h2 id="tools-title">أدواتك</h2>
+
+        <div class="row">
+          <button id="hookBtn" class="primary">اقترح خطّافاً</button>
+          <span id="hookOut" class="pill" role="status" aria-live="polite">سأقترح افتتاحية لافتة…</span>
+        </div>
+
+        <div class="section-title"><strong>المسودة</strong></div>
+        <label class="hint" for="title">العنوان (اختياري)</label>
+        <input id="title" type="text" placeholder="مثال: رائحة المكتبة القديمة" inputmode="text" />
+
+        <label class="hint" for="draft">اكتب هنا — الحفظ تلقائي</label>
+        <textarea id="draft" placeholder="الخطّاف:
+...
+
+الوصف الأساسي:
+...
+
+الخلاصة / الأثر:
+..."></textarea>
+
+        <div class="row" style="justify-content: space-between; margin-top:8px">
+          <div class="row">
+            <span class="pill">عدد الكلمات: <span id="wc" class="stat">0</span></span>
+            <span class="pill">الأحرف: <span id="chars" class="stat">0</span></span>
+          </div>
+          <div class="row">
+            <button id="copyBtn" title="نسخ إلى الحافظة">نسخ</button>
+            <button id="saveBtn" title="تنزيل ملف نصّي">تنزيل .txt</button>
+          </div>
+        </div>
+
+        <hr style="border:none; border-top:1px solid var(--border); margin:14px 0" />
+
+        <div>
+          <div class="section-title"><strong>مؤقّت جلسة</strong></div>
+          <div class="row">
+            <button class="tag" data-min="5">٥ دقائق</button>
+            <button class="tag" data-min="10">١٠ دقائق</button>
+            <button class="tag" data-min="15">١٥ دقيقة</button>
+          </div>
+          <div class="row" style="margin-top:8px">
+            <span class="pill" aria-live="polite">الوقت: <span id="timer" class="stat">10:00</span></span>
+            <button id="startPause">ابدأ</button>
+            <button id="reset">إعادة</button>
+          </div>
+          <div class="hint">جرّب سباق كتابة بلا توقّف. إذا جاءت أفكار جانبية، اكتبها بين أقواس وتابع.</div>
+        </div>
+      </section>
+
+      <!-- العمود الأيمن: الإرشاد + المثال -->
+      <section class="card" aria-labelledby="guide-title">
+        <h2 id="guide-title">خطوات سريعة للبدء</h2>
+        <ol class="checklist">
+          <li><input type="checkbox" /> <div><strong>حدّد “ما” ولماذا:</strong> ماذا تصف؟ ولماذا يهم القارئ؟</div></li>
+          <li><input type="checkbox" /> <div><strong>تفريغ حرّ:</strong> اسكب كل ما يخطر: صور، ذكريات، مشاعر (بلا ترتيب).</div></li>
+          <li><input type="checkbox" /> <div><strong>منظور السرد:</strong> أنا/هو/هي؟ من أي مسافة؟</div></li>
+          <li><input type="checkbox" /> <div><strong>هيكل بسيط:</strong> خطّاف → وصف أساسي (حواس/تفاصيل) → خلاصة/أثر.</div></li>
+          <li><input type="checkbox" /> <div><strong>أظهر قبل أن تخبر:</strong> مشاهد حسّية قبل التفسير.</div></li>
+          <li><input type="checkbox" /> <div><strong>اقرأ بصوت عالٍ:</strong> نظّف الإيقاع ووضوح الجمل.</div></li>
+          <li><input type="checkbox" /> <div><strong>رأي خارجي واحد:</strong> اسأل: ما الصورة الأوضح؟ وما الأكثر غموضاً؟</div></li>
+        </ol>
+
+        <div class="section-title"><strong>مثال قصير</strong></div>
+        <div class="example">
+          <p><em>الخطّاف</em><br>
+          تفيض العتبة برائحة خشبٍ رطبٍ وحبرٍ عتيق.</p>
+          <p><em>الوصف الأساسي</em><br>
+          ترتفع الدفاتر كأبراج مائلة، على ظهورها سنوات بأقلامٍ باهتة—٩٨، ٠٧، وواحد مُلطّخ من ١٥—ومصباحٌ أصفر يتوهّج فوقها، يجعل الغبار يرقص.</p>
+          <p><em>الخلاصة</em><br>
+          في ذلك الضيق الدافئ، لا يمضي الزمن؛ يفتح صفحاته وينتظر منك السطر التالي.</p>
+        </div>
+
+        <div class="section-title"><strong>قوالب سريعة</strong></div>
+        <div class="hint" style="margin-bottom:6px">انسخ ما تحتاجه إلى المسودة وعدّل:</div>
+        <div class="tag">[الخطّاف] صورة حسّية + تفصيل لافت</div>
+        <div class="tag">[الوصف] مظهر/صوت/رائحة/ملمس + سلوك + سياق</div>
+        <div class="tag">[الخلاصة] لماذا يهم/الأثر</div>
+      </section>
+    </div>
+
+    <footer>نُفّذ بواجهة عربية، يعمل دون اتصال، ويحترم حواف شاشة الآيفون. ✨</footer>
+  </div>
+
+  <script>
+    // ====== عناصر DOM
+    const root = document.documentElement;
+    const themeBtn = document.getElementById('themeBtn');
+    const hookBtn = document.getElementById('hookBtn');
+    const hookOut = document.getElementById('hookOut');
+    const titleEl = document.getElementById('title');
+    const draftEl = document.getElementById('draft');
+    const wcEl = document.getElementById('wc');
+    const charsEl = document.getElementById('chars');
+    const copyBtn = document.getElementById('copyBtn');
+    const saveBtn = document.getElementById('saveBtn');
+    const timerEl = document.getElementById('timer');
+    const startPauseBtn = document.getElementById('startPause');
+    const resetBtn = document.getElementById('reset');
+    const durationBtns = document.querySelectorAll('.tag[data-min]');
+    const toQuestionsBtn = document.getElementById('toQuestionsBtn');
+
+    // ====== حالة
+    let darkPref = localStorage.getItem('kitaba.theme') || '';
+    if(darkPref === 'dark'){ document.body.setAttribute('data-theme','dark'); themeBtn.textContent='الوضع الفاتح'; }
+    let interval = null;
+    let remaining = 10 * 60; // افتراضي 10 دقائق
+
+    // ====== أدوات نصية
+    function countWords(s){
+      const words = (s || '').trim().split(/\s+/u).filter(Boolean);
+      return words.length;
+    }
+    function updateStats(){
+      const text = draftEl.value;
+      wcEl.textContent = countWords(text);
+      charsEl.textContent = text.length;
+    }
+
+    // ====== حفظ تلقائي
+    function saveDraft(){
+      localStorage.setItem('kitaba.title', titleEl.value || '');
+      localStorage.setItem('kitaba.draft', draftEl.value || '');
+    }
+
+    // استعادة
+    (function restore(){
+      const t = localStorage.getItem('kitaba.title'); if(t) titleEl.value = t;
+      const d = localStorage.getItem('kitaba.draft'); if(d) draftEl.value = d;
+      updateStats();
+    })();
+
+    // ====== تبديل الوضع
+    themeBtn.addEventListener('click', ()=>{
+      const isDark = document.body.getAttribute('data-theme') === 'dark';
+      if(isDark){
+        document.body.removeAttribute('data-theme');
+        localStorage.setItem('kitaba.theme','');
+        themeBtn.textContent='الوضع الداكن';
+      }else{
+        document.body.setAttribute('data-theme','dark');
+        localStorage.setItem('kitaba.theme','dark');
+        themeBtn.textContent='الوضع الفاتح';
+      }
+    });
+
+    // ====== خطّافات عشوائية
+    const senses = [
+      'ابدأ برائحة غير متوقعة ثم تفصيل صغير يلمع.',
+      'التقط صوتًا متكررًا يملأ المكان، ثم اكشف مصدره.',
+      'صف ملمس شيء تلمسه بيدك أولًا، قبل أن تقول ما هو.',
+      'ارسم ضوءًا وظلًا، ثم شيئًا يتحرّك بينهما.',
+      'ابدأ بسؤال يفتح مشهدًا: ماذا لو لم يكن هذا المكان هنا؟',
+      'قدّم فعلًا صغيرًا يكشف شعورًا كبيرًا (يد ترتجف على فنجان).',
+      'اختر لونين متضادين واجعلهما يتصارعان في المشهد.',
+      'اربط حاسة بحكاية قصيرة: هذا الصوت يعيدني إلى ...'
+    ];
+    hookBtn.addEventListener('click', ()=>{
+      const idea = senses[Math.floor(Math.random()*senses.length)];
+      hookOut.textContent = idea;
+    });
+
+    // ====== تفاعلات النص
+    titleEl.addEventListener('input', ()=>{ saveDraft(); });
+    draftEl.addEventListener('input', ()=>{ updateStats(); saveDraft(); });
+
+    copyBtn.addEventListener('click', async ()=>{
+      try{
+        const content = (titleEl.value? (titleEl.value + '\n\n') : '') + draftEl.value;
+        await navigator.clipboard.writeText(content);
+        copyBtn.textContent = 'نُسِخ ✓';
+        setTimeout(()=>copyBtn.textContent='نسخ', 1200);
+      }catch(e){
+        alert('تعذّر النسخ تلقائيًا. يمكنك تحديد النص ونسخه يدويًا.');
+      }
+    });
+
+    saveBtn.addEventListener('click', ()=>{
+      const content = (titleEl.value? (titleEl.value + '\n\n') : '') + draftEl.value;
+      const blob = new Blob([content], {type:'text/plain;charset=utf-8'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const fileName = (titleEl.value || 'مسودة_كتابة') + '.txt';
+      a.href = url; a.download = fileName; document.body.appendChild(a); a.click();
+      URL.revokeObjectURL(url); a.remove();
+    });
+
+    // ====== المؤقّت
+    function fmt(sec){
+      const m = Math.floor(sec/60).toString().padStart(2,'0');
+      const s = Math.floor(sec%60).toString().padStart(2,'0');
+      return `${m}:${s}`;
+    }
+    function setDuration(min){
+      remaining = min * 60;
+      timerEl.textContent = fmt(remaining);
+    }
+    durationBtns.forEach(btn=>{
+      btn.addEventListener('click', ()=>{ setDuration(parseInt(btn.dataset.min,10)); });
+    });
+
+    function tick(){
+      if(remaining > 0){ remaining--; timerEl.textContent = fmt(remaining); }
+      else{
+        clearInterval(interval); interval = null;
+        startPauseBtn.textContent = 'ابدأ';
+        if('vibrate' in navigator){ navigator.vibrate([120,60,120]); }
+        alert('أحسنت! انتهت الجلسة. راجع ما كتبت بسرعة وأشر إلى أقوى صورة.');
+      }
+    }
+    startPauseBtn.addEventListener('click', ()=>{
+      if(interval){
+        clearInterval(interval); interval = null; startPauseBtn.textContent = 'ابدأ';
+      }else{
+        interval = setInterval(tick, 1000); startPauseBtn.textContent = 'إيقاف مؤقت';
+      }
+    });
+    resetBtn.addEventListener('click', ()=>{
+      clearInterval(interval); interval = null;
+      setDuration(10); startPauseBtn.textContent = 'ابدأ';
+    });
+
+    // تهيئة أولية للمؤقّت
+    timerEl.textContent = fmt(remaining);
+
+    // ====== رجوع إلى صفحة الأسئلة
+    toQuestionsBtn.addEventListener('click', () => {
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>

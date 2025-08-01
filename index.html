@@ -123,6 +123,24 @@
       background-color: #3b8f41;
     }
 
+    /* Navigation button */
+    .nav-btn {
+      background-color: var(--primary-color);
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      font-weight: 600;
+      border-radius: var(--radius);
+      cursor: pointer;
+      width: 100%;
+      transition: background-color 0.3s ease;
+      margin-bottom: 20px;
+    }
+
+    .nav-btn:hover {
+      background-color: var(--button-hover);
+    }
+
     /* Responsive Design for Small Screens (iPhones) */
     @media (max-width: 600px) {
       body {
@@ -162,7 +180,7 @@
 <body>
 
 <h1>إنشاء الأسئلة وحفظ الإجابات كـ PDF</h1>
-
+<button id="toWriterBtn" class="nav-btn">انتقل إلى صفحة الكتابة</button>
 <!-- Input Block -->
 <div id="inputBlock">
   <textarea id="listInput" placeholder="أدخل أسئلتك هنا (واحدة في كل سطر أو مع ترقيم 1-، 2-، 3- …)"></textarea>
@@ -260,6 +278,11 @@
     const safe = question.slice(0, 30).replace(/[^\w\- ]+/g, '').trim().replace(/\s+/g, '_');
     doc.save((safe || 'question') + '.pdf');
   }
+
+  // التنقل إلى صفحة الكتابة
+  document.getElementById('toWriterBtn').addEventListener('click', () => {
+    window.location.href = 'index2.html';
+  });
 </script>
 
 </body>
