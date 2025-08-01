@@ -104,6 +104,21 @@
                  Tahoma, Arial, sans-serif;
   }
   body{ font-weight: 400; }
+  /* إظهار حقل ملاحظات أسفل كل عنصر عند التفعيل */
+  .checklist textarea{
+    display:none; width:100%; margin-top:8px; min-height:120px;
+    border:1px solid var(--border); background:#fff0; color:var(--fg);
+    border-radius:12px; padding:12px; font-size:16px;
+  }
+    /* ====== تكبير حقل المسودة في وضع ملء الشاشة ====== */
+    #draft:fullscreen,
+    #draft:-webkit-full-screen{
+      width:100vw; height:100vh; margin:0; border:none; padding:20px;
+      box-sizing:border-box; font-size:clamp(18px,3.5vw,24px);
+      background:#ffffff; color:var(--fg); outline:none;
+    }
+    html:fullscreen, html:-webkit-full-screen{ background:#ffffff; }
+    html:fullscreen::backdrop, html:-webkit-full-screen::backdrop{ background:#ffffff; }
   </style>
 </head>
 <body>
@@ -151,6 +166,7 @@
           <div class="row">
             <button id="copyBtn" title="نسخ إلى الحافظة">نسخ</button>
             <button id="saveBtn" title="تنزيل ملف نصّي">تنزيل .txt</button>
+            <button id="fsBtn" title="عرض ملء الشاشة">ملء الشاشة</button>
           </div>
         </div>
 
@@ -309,6 +325,25 @@
       URL.revokeObjectURL(url); a.remove();
     });
 
+    // ====== ملء الشاشة لمساحة الكتابة
+    const fsBtn = document.getElementById('fsBtn');
+
+    function updateFsBtn(){
+      fsBtn.textContent = document.fullscreenElement? 'الخروج من الشاشة الكاملة' : 'ملء الشاشة';
+    }
+
+    fsBtn.addEventListener('click', ()=>{
+      if(document.fullscreenElement){
+        document.exitFullscreen();
+      }else{
+        // اطلب ملء الشاشة للعناصر الأساسية فقط لتجنب تداخل الحروف في iOS
+        (document.documentElement.requestFullscreen || draftEl.requestFullscreen)?.call(document.documentElement);
+      }
+    });
+
+    document.addEventListener('fullscreenchange', updateFsBtn);
+    updateFsBtn();
+
     // ====== المؤقّت
     function fmt(sec){
       const m = Math.floor(sec/60).toString().padStart(2,'0');
@@ -350,6 +385,25 @@
     // ====== رجوع إلى صفحة الأسئلة
     toQuestionsBtn.addEventListener('click', () => {
       window.location.href = 'index.html';
+    });
+
+    // ====== ملاحظات قائمة التحقق
+    document.querySelectorAll('.checklist li').forEach(li=>{
+      const checkbox = li.querySelector('input[type="checkbox"]');
+      checkbox.addEventListener('change', ()=>{
+        let textarea = li.querySelector('textarea');
+        if(checkbox.checked){
+          if(!textarea){
+            textarea = document.createElement('textarea');
+            textarea.placeholder = 'ملاحظات…';
+            textarea.dir = 'rtl';
+            li.appendChild(textarea);
+          }
+          textarea.style.display = 'block';
+        }else if(textarea){
+          textarea.style.display = 'none';
+        }
+      });
     });
   </script>
 </body>

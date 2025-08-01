@@ -7,170 +7,94 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/3.0.1/jspdf.umd.min.js"></script>
   
   <style>
-    :root {
-      --bg-color: #f9f9f9;
-      --card-bg: #fff;
-      --primary-color: #0060ff;
-      --border-color: #e0e0e0;
-      --font: "Segoe UI", Roboto, system-ui, -apple-system, sans-serif;
-      --radius: 12px;
-      --box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
-      --button-hover: #0047d6;
+    :root{
+      --bg:#ffffff; --fg:#111111; --muted:#5f6368; --card:#f5f5f7;
+      --accent:#0a84ff; --accent-fg:#ffffff; --border:#e5e5ea;
+      --radius:14px; --shadow:0 6px 20px rgba(0,0,0,.08);
+      /* aliases for legacy selectors */
+      --bg-color: var(--bg);
+      --card-bg: var(--card);
+      --primary-color: var(--accent);
+      --border-color: var(--border);
+      --box-shadow: var(--shadow);
+      --button-hover: #0059d1;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: var(--font);
-      background-color: var(--bg-color);
-      color: #333;
-      line-height: 1.5;
-      padding: 16px;
-      direction: rtl;
-    }
-
-    h1 {
-      font-size: 2rem;
-      color: var(--primary-color);
-      text-align: center;
-      margin-bottom: 24px;
-    }
-
-    /* Input Section */
-    #inputBlock {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius);
-      padding: 20px;
-      box-shadow: var(--box-shadow);
-      margin-bottom: 32px;
-    }
-
-    #listInput {
-      width: 100%;
-      height: 100px;
-      padding: 12px;
-      font-size: 1rem;
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius);
-      margin-bottom: 14px;
-      text-align: right;
-      resize: none;
-      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    #generateBtn {
-      background-color: var(--primary-color);
-      color: #fff;
-      border: none;
-      padding: 12px 24px;
-      font-weight: 600;
-      border-radius: var(--radius);
-      cursor: pointer;
-      width: 100%;
-      transition: background-color 0.3s ease;
-    }
-
-    #generateBtn:hover {
-      background-color: var(--button-hover);
-    }
-
-    /* Question Cards */
-    .card {
-      background-color: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius);
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: var(--box-shadow);
-    }
-
-    .card p {
-      font-weight: 600;
-      margin-bottom: 10px;
-      text-align: right;
-    }
-
-    .answer-input {
-      width: 100%;
-      height: 80px;
-      padding: 10px;
-      font-size: 1rem;
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius);
-      margin-bottom: 14px;
-      text-align: right;
-      resize: none;
-    }
-
-    .save-pdf-btn {
-      background-color: #4caf50;
-      color: #fff;
-      border: none;
-      padding: 10px 18px;
-      border-radius: var(--radius);
-      cursor: pointer;
-      font-weight: 600;
-      width: 100%;
-      transition: background-color 0.3s ease;
-    }
-
-    .save-pdf-btn:hover {
-      background-color: #3b8f41;
-    }
-
-    /* Navigation button */
-    .nav-btn {
-      background-color: var(--primary-color);
-      color: #fff;
-      border: none;
-      padding: 12px 24px;
-      font-weight: 600;
-      border-radius: var(--radius);
-      cursor: pointer;
-      width: 100%;
-      transition: background-color 0.3s ease;
-      margin-bottom: 20px;
-    }
-
-    .nav-btn:hover {
-      background-color: var(--button-hover);
-    }
-
-    /* Responsive Design for Small Screens (iPhones) */
-    @media (max-width: 600px) {
-      body {
-        padding: 10px;
+    @media (prefers-color-scheme: dark){
+      :root{
+        --bg:#0b0b0c; --fg:#f2f2f7; --muted:#a0a4ab; --card:#151518;
+        --border:#232327; --shadow:none; --accent:#0a84ff; --accent-fg:#ffffff;
       }
-
-      h1 {
-        font-size: 1.7rem;
-      }
-
-      #listInput {
-        height: 120px;
-      }
-
-      #generateBtn {
-        padding: 12px 18px;
-      }
-
-      .card {
-        padding: 15px;
-      }
-
-      .save-pdf-btn {
-        padding: 12px 16px;
-      }
-    *{
-        font-family: "Almarai", sans-serif;
     }
+
+    [data-theme="dark"]{
+      --bg:#0b0b0c; --fg:#f2f2f7; --muted:#a0a4ab; --card:#151518;
+      --border:#232327; --shadow:none; --accent:#0a84ff; --accent-fg:#ffffff;
     }
-    
+
+    *,*::before,*::after{box-sizing:border-box; margin:0; padding:0;}
+
+    body{
+      margin:0; direction:rtl;
+      font-family:'Almarai', -apple-system,BlinkMacSystemFont,"SF Pro","SF Arabic",
+                   "Segoe UI","Noto Naskh Arabic","Noto Sans Arabic",
+                   Tahoma,Arial,sans-serif;
+      background:var(--bg); color:var(--fg); line-height:1.6;
+      padding: clamp(12px,3vw,22px);
+    }
+
+    h1{
+      font-size:clamp(24px,5vw,34px); margin-bottom:24px;
+      color:var(--accent); text-align:center;
+    }
+
+    /* ====== Cards & Containers ====== */
+    .card,
+    #inputBlock{
+      background:var(--card); border:1px solid var(--border);
+      border-radius:var(--radius); padding:20px; box-shadow:var(--shadow);
+      margin-bottom:24px;
+    }
+
+    /* ====== Text Inputs ====== */
+    textarea, input[type="text"], .answer-input, #listInput{
+      width:100%; border:1px solid var(--border); background:#fff0;
+      color:var(--fg); border-radius:12px; padding:12px; font-size:16px;
+      resize:vertical;
+    }
+    textarea{min-height:100px;}
+
+    /* ====== Buttons ====== */
+    button{
+      border:1px solid var(--border); background:var(--card); color:var(--fg);
+      border-radius:12px; padding:12px 18px; font-size:15px; cursor:pointer;
+      box-shadow:var(--shadow); transition:transform .05s ease, background-color .3s ease;
+      width:100%;
+    }
+    button:active{transform:scale(.98)}
+
+    .primary,
+    #generateBtn,
+    .nav-btn{
+      background:var(--accent); color:var(--accent-fg); border-color:transparent;
+    }
+    #generateBtn:hover,
+    .nav-btn:hover{
+      background:var(--button-hover);
+    }
+
+    .save-pdf-btn{ background:#4caf50; color:#fff; border-color:transparent; }
+    .save-pdf-btn:hover{ background:#3b8f41; }
+
+    /* ====== Typography ====== */
+    p{margin-bottom:10px; font-weight:600; text-align:right;}
+
+    /* ====== Responsive Tweaks for iPhone ====== */
+    @media (max-width:600px){
+      body{ padding:10px; }
+      h1{ font-size:1.8rem; }
+      textarea{ min-height:120px; }
+    }
   </style>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -229,6 +153,9 @@
       return;
     }
     const doc = new jsPDF({ unit: 'pt', format: 'a4', hotfixes: ['px_scaling'] });
+    doc.setFont('noto');        // Arabic-capable font
+    // ensure right-to-left layout
+    if (doc.setR2L) doc.setR2L(true);
     let y = 40, margin = 40, maxW = 520;
     const pageH = doc.internal.pageSize.getHeight();
     cards.forEach((card, idx) => {
@@ -256,10 +183,12 @@
     });
     doc.save('all_questions.pdf');
   });
-
+  
   /* PDF maker */
   function saveAsPDF(question, answer) {
     const doc = new jsPDF({ unit: 'pt', format: 'a4', hotfixes: ['px_scaling'] });
+    doc.setFont('noto');        // Arabic-capable font
+    if (doc.setR2L) doc.setR2L(true);
     let y = 40, margin = 40, maxW = 520;
     doc.setFontSize(14);
     doc.setFont(undefined, 'bold');
@@ -278,7 +207,7 @@
     const safe = question.slice(0, 30).replace(/[^\w\- ]+/g, '').trim().replace(/\s+/g, '_');
     doc.save((safe || 'question') + '.pdf');
   }
-
+  
   // التنقل إلى صفحة الكتابة
   document.getElementById('toWriterBtn').addEventListener('click', () => {
     window.location.href = 'index2.html';
@@ -287,4 +216,3 @@
 
 </body>
 </html>
-
